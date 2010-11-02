@@ -1,0 +1,72 @@
+Author : Stéphane Florentin
+
+--------------------------------
+FR description
+--------------------------------
+FloCaptcha est un webservice fournisseur de controle captcha image et audio.
+Le service web est développé en PHP et utilise une base de donnée mysql.
+Le webservice est modulaire, il est possibe d'ajouter des classes de génération d'images et de génération audio.
+
+FloCaptcha met à disposition une librairie javascript qui facilite l'intégration du captcha dans votre formulaire.
+FloCaptcha fourni aussi une librairie pour le contrôle du captcha coté serveur (suivant le language).
+
+Le principe de FloCaptcha est de créer un code de controle associé à un identifant (floCaptchaID).
+Lidentifiant permet d'obtenir l'image et le fichier audio créer représentant le code de contrôle.
+Le contrôle du captcha ne peut être effectué qu'une seule fois.
+
+
+----------
+FR usage
+----------
+Dans le formulaire html:
+	<script type="text/javascript" src="http://localhost/floCaptcha/floCaptchaWebService/floCaptcha.js"></script>
+	<script type="text/javascript">
+		floCaptcha_setUrlWebService('http://localhost/floCaptcha/floCaptchaWebService/');
+		floCaptcha_makeForm();
+	</script>
+
+Dans le code coté serveur (exemple en php):
+	require("../floCaptchaLib/floCaptchaVerif.inc");
+	if(floCaptchaVerif($_REQUEST)){
+		//Traitment en cas de succes du controle captcha
+	}else{
+		//Traitement en cas d'échec du controle captcha
+	}
+
+------------------------------
+FR principe de fonctionnement 
+------------------------------
+- Appel de la fonction JS makeForm();
+	- Appel du webservice pour la création d'un captcha. 
+		- Création d'un tuple en base de donnée FloCaptchaId et code de contôle
+		- Le webservice retourne un FloCaptchaID
+	- Génération du formulaire
+		- Récupération de l'image Captcha à partir du FloCaptchaID
+		- Récupération de l'audio Captcha à partir du FloCaptchaID
+- Validation du formulaire
+	- Appel de la fonction floCaptchaVerif (librairie PHP)
+		- Recupération du code de controle saisie dans la collection des variables du formulaire
+		- Appel du webService pour contrôle en fournissant FloCaptchaID et code de contrôle saisie
+			- Le webService vérifie la cohérence du code de contrôle saisie avec le code de contrôle en BDD
+			- Suppression du captcha dans la base de données
+			- Réponse "OK" ou "NO"
+		- Retour true ou false de la fonction
+
+
+-------------------
+FR modularité
+-------------------
+Il est possible sur son instance de webservice FloCaptcha de créer ses propre classe PHP de génération d'image ou d'audio.
+Pour cela, il faut :
+	- Créer un dossier du nom de sa classe dans le dossier "class"
+	- Créer dans ce dossier un fichier <maclass>.inc contenant la classe PHP.
+	- La classe php doit implémenter l'interface floCaptchaImage pour la génération d'image et FloCaptchaDiction pour la génération audio.
+L'utilisation de ces classes doit ensuite se préciser dans l'appel de la fonction JS floCaptchaSetParameters(options).
+
+	
+	
+
+
+
+
+

@@ -20,7 +20,7 @@ function floCaptcha_makeForm(){
 
 function floCaptcha_makeContentHtml(idCaptcha){
 	chemin_image = floCaptcha_urlManager + "floCaptcha.php?action=getImage&idCaptcha=" + idCaptcha;
-	chemin_audio = floCaptcha_urlManager + "floCaptcha.php?action=getDiction&idCaptcha=" + floCaptcha_idCaptcha + "'";
+	chemin_audio = floCaptcha_urlManager + "floCaptcha.php?action=getDiction&idCaptcha=" + floCaptcha_idCaptcha ;
 	chemin_audio = encodeURIComponent(chemin_audio);
 	ret = "";
 	ret += "<img src='" + chemin_image + "' />";
